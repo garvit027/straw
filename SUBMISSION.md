@@ -4,7 +4,7 @@
 - **GitHub repository:** https://github.com/garvit027/straw
 - **LinkedIn:** https://www.linkedin.com/in/garvit027/
 - **Email:** final draft in [`EMAIL.md`](EMAIL.md)
-- **Demo video:** script below — needs recording (3–5 minutes)
+- **Demo video:** 3–5 minute walkthrough (script below)
 
 Before recording, clear browser storage so the app starts from the exact seed data described here: open DevTools → Application → Local Storage → clear the `smart-roster:state:v1` key, then reload. The first paint now already shows a generated roster.
 
@@ -52,4 +52,4 @@ Record at 1280×720 or higher. Use the default December 2026 month. Move the cur
 ## Recording tips
 - If you assign a backup during a take, click **Reset** in the top bar before the next take.
 - Keep it under 5 minutes — the assignment asks for 3–5.
-- Export at MP4/H.264 and attach it to the email in `EMAIL.md`.
+- Export at MP4/H.264.

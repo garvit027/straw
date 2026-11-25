@@ -130,13 +130,3 @@ I would add a real optimisation solver with a weighted objective for fairness an
 ## Deployment
 
 `.github/workflows/deploy.yml` builds with `npm ci && npm run build` and publishes `dist/` with the official GitHub Pages actions. Enable Pages with **Source = GitHub Actions** in repository settings (or `gh api -X PUT repos/:owner/:repo/pages -f build_type=workflow`). The Vite `base` is `/straw/`; override it with `VITE_BASE_PATH` if the repo is renamed.
-
-## Submission
-
-- **Application URL:** https://garvit027.github.io/straw/
-- **GitHub repository:** https://github.com/garvit027/straw
-- **LinkedIn:** https://www.linkedin.com/in/garvit027/
-- **Demo video:** _record a 3–5 minute walkthrough covering roster generation, different brand schedules, conflict detection and the change simulator — see [`SUBMISSION.md`](SUBMISSION.md) for the timed script and [`EMAIL.md`](EMAIL.md) for the ready-to-send email_
-- **Email to:** ozair.shaikh@datastraw.in, aryan.jaiswal@datastraw.in
-- **CC:** talent@datastraw.in
-- **Subject:** Smart Roster Management System Assignment - Garvit Juneja

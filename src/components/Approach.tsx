@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Workflow, GitCommitVertical, ListChecks } from 'lucide-react';
+import { ChevronDown, Workflow, GitCommitVertical } from 'lucide-react';
 import { Card, Pill, SectionHeader } from './ui';
 
 const QUESTIONS: Array<{ q: string; a: string[] }> = [
@@ -100,16 +100,6 @@ export default function Approach() {
         </div>
       </Card>
 
-      <Card>
-        <SectionHeader title="Submission checklist" subtitle="Items prepared for the email to Datastraw" />
-        <div className="checklist">
-          <div><ListChecks size={17} /> Working application URL <Pill tone="green">GitHub Pages</Pill></div>
-          <div><ListChecks size={17} /> GitHub repository + README + .env.example <Pill tone="green">Ready</Pill></div>
-          <div><ListChecks size={17} /> 3–5 minute demo video <Pill tone="amber">Record yourself</Pill></div>
-          <div><ListChecks size={17} /> Approach note <Pill tone="green">In README + this page</Pill></div>
-          <div><ListChecks size={17} /> LinkedIn profile link <Pill tone="amber">Add your URL</Pill></div>
-        </div>
-      </Card>
     </div>
   );
 }
