@@ -1,3 +1,4 @@
+import { generateRoster } from '../engine/scheduler';
 import {
   WORKING_RULE_PRESETS,
   type Allocation,
@@ -176,7 +177,7 @@ export function createSeedState(): AppState {
     { id: 'leave-6', employeeId: 'emp-28', startDate: '2026-12-27', endDate: '2026-12-28', type: 'PLANNED', reason: 'Travel' },
   ];
 
-  return {
+  const state: AppState = {
     employees,
     brands,
     processes,
@@ -191,4 +192,8 @@ export function createSeedState(): AppState {
     baselineOverrides: [],
     rosterMonth: DEFAULT_MONTH,
   };
+
+  // Generate synchronously so the first paint already shows a real roster
+  // instead of a brief 0% / "no roster" state.
+  return { ...state, roster: generateRoster({ ...state, month: DEFAULT_MONTH }) };
 }

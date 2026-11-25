@@ -2,8 +2,8 @@
 
 A browser-based roster planning tool built for the Datastraw AI + Tech Internship assessment. It plans monthly rosters across multiple brands, processes and operational pods, and — more importantly — tells an operations manager exactly **why** a plan is or is not publishable.
 
-**Live demo:** https://garvit027.github.io/smart-roster/
-**Repository:** https://github.com/garvit027/smart-roster
+**Live demo:** https://garvit027.github.io/straw/
+**Repository:** https://github.com/garvit027/straw
 
 ---
 
@@ -29,13 +29,13 @@ The seed data follows the brief: 20 of 25 brands (80%) have one dedicated employ
 ## Quick start
 
 ```bash
-git clone https://github.com/garvit027/smart-roster.git
-cd smart-roster
+git clone https://github.com/garvit027/straw.git
+cd straw
 npm install
 npm run dev
 ```
 
-Open the URL printed by Vite (the production build uses the `/smart-roster/` base path).
+Open the URL printed by Vite (the production build uses the `/straw/` base path).
 
 ```bash
 npm run build      # typecheck + production bundle
@@ -129,14 +129,14 @@ I would add a real optimisation solver with a weighted objective for fairness an
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds with `npm ci && npm run build` and publishes `dist/` with the official GitHub Pages actions. Enable Pages with **Source = GitHub Actions** in repository settings (or `gh api -X PUT repos/:owner/:repo/pages -f build_type=workflow`). The Vite `base` is `/smart-roster/`; override it with `VITE_BASE_PATH` if the repo is renamed.
+`.github/workflows/deploy.yml` builds with `npm ci && npm run build` and publishes `dist/` with the official GitHub Pages actions. Enable Pages with **Source = GitHub Actions** in repository settings (or `gh api -X PUT repos/:owner/:repo/pages -f build_type=workflow`). The Vite `base` is `/straw/`; override it with `VITE_BASE_PATH` if the repo is renamed.
 
 ## Submission
 
-- **Application URL:** https://garvit027.github.io/smart-roster/
-- **GitHub repository:** https://github.com/garvit027/smart-roster
-- **LinkedIn:** _add your public profile URL before sending_
-- **Demo video:** _record a 3–5 minute walkthrough covering roster generation, different brand schedules, conflict detection and the change simulator — see [`SUBMISSION.md`](SUBMISSION.md) for a timed script and ready-to-send email draft_
+- **Application URL:** https://garvit027.github.io/straw/
+- **GitHub repository:** https://github.com/garvit027/straw
+- **LinkedIn:** https://www.linkedin.com/in/garvit027/
+- **Demo video:** _record a 3–5 minute walkthrough covering roster generation, different brand schedules, conflict detection and the change simulator — see [`SUBMISSION.md`](SUBMISSION.md) for the timed script and [`EMAIL.md`](EMAIL.md) for the ready-to-send email_
 - **Email to:** ozair.shaikh@datastraw.in, aryan.jaiswal@datastraw.in
 - **CC:** talent@datastraw.in
 - **Subject:** Smart Roster Management System Assignment - Garvit Juneja
