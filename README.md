@@ -11,7 +11,7 @@ A browser-based roster planning tool built for the Datastraw AI + Tech Internshi
 
 | Capability | Where in the app |
 |---|---|
-| 32 employees, 25 brands, 5 processes, 4 pods with leads | *Setup & data* (fully editable) |
+| 30 employees, 20 brands, 4 processes, 4 pods with leads | *Setup & data* (fully editable) |
 | Per-brand-process operating calendars (365-day / holidays-off / Mon–Sat / Mon–Fri) | *Setup & data → Allocations* |
 | Minimum coverage, shared processes, multi-process single-resource brands | *Setup & data → Allocations* |
 | Leaves, comp-offs, public holidays, availability overrides | *Setup & data* |
@@ -22,7 +22,7 @@ A browser-based roster planning tool built for the Datastraw AI + Tech Internshi
 | Before/after change simulation with gap detection | *Change simulator* |
 | CSV export, reset to sample data, in-app approach note | Top bar / *Approach* |
 
-The seed data follows the brief: 20 of 25 brands (80%) have one dedicated employee handling every assigned process; the remaining five have two or three employees, with distinct processes in some brands and shared processes in others. A few specialists work across two brands.
+The seed data follows the brief: 16 of 20 brands (80%) have one dedicated employee handling every assigned process; the remaining four have two or three core employees, with distinct processes in some brands and shared processes in others. Two specialists also work across brands.
 
 ---
 
@@ -51,7 +51,7 @@ No API keys, accounts or backend services are required. State is persisted in th
 ```
 src/
 ├── types.ts              Domain model and working-rule presets
-├── data/seed.ts          Deterministic 32-employee sample dataset
+├── data/seed.ts          Deterministic 30-employee sample dataset
 ├── engine/
 │   ├── calendar.ts       Holiday / weekday / operating-day classification
 │   ├── scheduler.ts      buildRoster + validateRoster (the core)
@@ -94,7 +94,7 @@ Generation is deterministic and runs in two phases. `buildRoster` walks each cal
 
 ### 3. How did you handle the difference between single-resource brands and brands with multiple employees?
 
-There is no special code path. A single-resource brand is simply an Allocation with one `employeeId`; a multi-resource brand has two or three. The sample data includes 20 single-resource brands (80%), brands where each person owns a different process, and brands where two people share the same process with `minCoverage = 2`. The difference emerges in validation: a single-resource allocation with a leave on a required day has zero candidates, so it produces a critical shortfall with no internal backup. A three-person brand can usually absorb the same absence by letting the remaining people cover, which the recommender quantifies.
+There is no special code path. A single-resource brand is simply an Allocation with one `employeeId`; a multi-resource brand has two or three. The sample data includes 16 single-resource brands (80%), brands where each person owns a different process, and brands where two people share the same process with `minCoverage = 2`. The difference emerges in validation: a single-resource allocation with a leave on a required day has zero candidates, so it produces a critical shortfall with no internal backup. A three-person brand can usually absorb the same absence by letting the remaining people cover, which the recommender quantifies.
 
 ### 4. What happens when an employee manages all processes for a brand but is unavailable on a required working day?
 
@@ -125,7 +125,7 @@ I would add a real optimisation solver with a weighted objective for fairness an
 - Public holidays are global; each allocation's rule decides whether it works on them.
 - An `AVAILABLE` override is an explicit manager decision and outranks an approved leave.
 - Conflicts never block generation; they block *publishing*. The UI makes mandatory conflicts impossible to miss.
-- Seed holidays and names are fictional and intended only to exercise the rules.
+- Seed names, holidays, weekly-off rules and coverage requirements are illustrative; all are editable in the app.
 
 ## Deployment
 

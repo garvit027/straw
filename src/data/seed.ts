@@ -20,22 +20,21 @@ const PROCESS_DEFS: Array<[string, string, string]> = [
   ['ACC', 'Abandoned Cart Conversion', '#7c3aed'],
   ['RET', 'Retention', '#0d9488'],
   ['NDR', 'Non-Delivery Report', '#ea580c'],
-  ['OPS', 'Operations', '#db2777'],
 ];
 
 const EMPLOYEE_NAMES = [
   'Aarav Sharma', 'Priya Nair', 'Rohan Mehta', 'Sneha Iyer', 'Aditya Rao', 'Kavya Desai', 'Vikram Singh', 'Meera Joshi',
   'Arjun Kapoor', 'Divya Menon', 'Nikhil Verma', 'Ananya Rao', 'Siddharth Jain', 'Riya Bharadwaj', 'Karan Malhotra', 'Pooja Shetty',
   'Rahul Deshpande', 'Neha Gupta', 'Aman Sethi', 'Ishita Mukherjee', 'Varun Nair', 'Shruti Kulkarni', 'Deepak Yadav', 'Tanvi Shah',
-  'Manish Agarwal', 'Ruchi Tiwari', 'Saurabh Bose', 'Anjali Rane', 'Gaurav Thakur', 'Nandini Pillai', 'Ashish Dubey', 'Rekha Pawar',
+  'Manish Agarwal', 'Ruchi Tiwari', 'Saurabh Bose', 'Anjali Rane', 'Gaurav Thakur', 'Nandini Pillai',
 ];
 
+// 16 single-resource brands (80%) followed by 4 multi-employee brands.
 const BRAND_NAMES = [
   'Aurora Lifestyle', 'Bloom & Co', 'Caliber Fitness', 'Driftwood Home', 'Ember Skincare',
   'Fable Foods', 'Grove Organics', 'Halo Electronics', 'Indigo Apparel', 'Juniper Pets',
-  'Kite Media', 'Lumen Health', 'Maple Street', 'Nomad Trail', 'Orchid Beauty',
-  'Pixel Studios', 'Quartz Digital', 'Redwood Toys', 'Solace Wellness', 'Terra Ceramics',
-  'Urban Merge', 'Verve Fashion', 'Willow Goods', 'Xenon Motors', 'Yonder Coffee',
+  'Kite Media', 'Lumen Health', 'Maple Street', 'Nomad Trail', 'Orchid Beauty', 'Pixel Studios',
+  'Urban Merge', 'Verve Fashion', 'Willow Goods', 'Xenon Motors',
 ];
 
 const POD_DEFS: Array<[string, string, number]> = [
@@ -58,7 +57,7 @@ function ruleFor(index: number, processId: string, allocationId: string) {
     case 'ACC': preset = index % 4 === 0 ? 'DAILY_NO_HOLIDAYS' : 'MON_SAT'; break;
     case 'RET': preset = 'MON_FRI'; break;
     case 'NDR': preset = index % 2 === 0 ? 'DAILY_NO_HOLIDAYS' : 'MON_SAT'; break;
-    default: preset = index % 5 === 0 ? 'ALLS_DAYS' : 'MON_SAT';
+    default: preset = 'MON_SAT';
   }
   return rule(preset, allocationId);
 }
@@ -87,8 +86,8 @@ export function createSeedState(): AppState {
       ],
       maxConsecutiveDays: i % 7 === 0 ? 5 : 6,
       skills: [
-        processes[i % 5].id,
-        ...(i % 3 === 0 ? [processes[(i + 2) % 5].id] : []),
+        processes[i % processes.length].id,
+        ...(i % 3 === 0 ? [processes[(i + 2) % processes.length].id] : []),
       ],
       joiningDate: `2024-${String((i % 12) + 1).padStart(2, '0')}-15`,
     };
@@ -103,7 +102,7 @@ export function createSeedState(): AppState {
   }));
 
   const allocations: Allocation[] = [];
-  const extras = ['ACC', 'RET', 'NDR', 'OPS'];
+  const assignments = ['ACC', 'RET', 'NDR'];
   let allocationNo = 0;
   const add = (
     brandIndex: number,
@@ -123,58 +122,52 @@ export function createSeedState(): AppState {
     });
   };
 
-  // 20 single-resource brands: one employee handles every assigned process.
-  for (let i = 0; i < 20; i++) {
+  // 16 of 20 brands (80%): one employee handles every assigned process.
+  for (let i = 0; i < 16; i++) {
     const employeeId = `emp-${String(i + 1).padStart(2, '0')}`;
-    const second = extras[i % 4];
     add(i, 'CS', [employeeId], 1, null);
-    add(i, second, [employeeId], 1, null);
-    if (i % 3 === 0) add(i, extras[(i % 4) + 1], [employeeId], 1, null);
+    add(i, assignments[i % assignments.length], [employeeId], 1, null);
+    if (i % 3 === 0) add(i, assignments[(i % assignments.length) + 1], [employeeId], 1, null);
   }
 
-  // 5 multi-employee brands: distinct processes + one genuinely shared process.
-  const multi = [
-    { brand: 20, employees: [21, 22], shared: 'ACC' },
-    { brand: 21, employees: [23, 24], shared: 'ACC' },
-    { brand: 22, employees: [25, 26, 27], shared: 'CS' },
-    { brand: 23, employees: [28, 29, 30], shared: 'CS' },
-    { brand: 24, employees: [31, 32], shared: 'ACC' },
-  ];
-  multi.forEach(({ brand, employees: empNums, shared }) => {
-    const ids = empNums.map((n) => `emp-${String(n).padStart(2, '0')}`);
-    if (shared === 'CS') {
-      add(brand, 'CS', ids.slice(0, 2), 2, brand % 2 === 0 ? 'ALLS_DAYS' : 'DAILY_NO_HOLIDAYS');
-      add(brand, 'ACC', [ids[2]], 1, 'MON_SAT');
-      add(brand, 'NDR', ids.slice(0, 2), 1, 'DAILY_NO_HOLIDAYS');
-    } else {
-      add(brand, 'CS', [ids[0]], 1, 'DAILY_NO_HOLIDAYS');
-      add(brand, 'ACC', ids, 1, 'MON_SAT');
-      add(brand, 'RET', [ids[1]], 1, 'MON_FRI');
-    }
-  });
+  // 4 brands with two or three core employees: separate processes, shared
+  // processes, and two cross-trained specialists who work across brands.
+  add(16, 'CS', ['emp-17'], 1, 'DAILY_NO_HOLIDAYS');
+  add(16, 'ACC', ['emp-17', 'emp-18'], 2, 'MON_SAT');
+  add(16, 'NDR', ['emp-19'], 1, 'ALLS_DAYS');
 
-  // A handful of employees work across two brands (shared specialists).
-  add(21, 'NDR', ['emp-21'], 1, 'MON_FRI');
-  add(24, 'OPS', ['emp-27', 'emp-32'], 1, 'MON_SAT');
+  add(17, 'CS', ['emp-20'], 1, 'DAILY_NO_HOLIDAYS');
+  add(17, 'ACC', ['emp-21'], 1, 'MON_SAT');
+  add(17, 'RET', ['emp-22'], 1, 'MON_FRI');
+  add(17, 'NDR', ['emp-20', 'emp-21'], 1, 'DAILY_NO_HOLIDAYS');
+
+  add(18, 'CS', ['emp-23', 'emp-24'], 2, 'ALLS_DAYS');
+  add(18, 'ACC', ['emp-25'], 1, 'MON_SAT');
+  add(18, 'NDR', ['emp-23', 'emp-29'], 1, 'DAILY_NO_HOLIDAYS');
+
+  add(19, 'CS', ['emp-26'], 1, 'DAILY_NO_HOLIDAYS');
+  add(19, 'ACC', ['emp-27'], 1, 'MON_SAT');
+  add(19, 'RET', ['emp-28'], 1, 'MON_FRI');
+  add(19, 'NDR', ['emp-27', 'emp-30'], 1, 'DAILY_NO_HOLIDAYS');
+
+  add(16, 'RET', ['emp-29'], 1, 'MON_FRI');
+  add(17, 'ACC', ['emp-30'], 1, 'MON_SAT');
 
   const holidays: Holiday[] = [
     { date: '2026-10-02', name: 'Gandhi Jayanti' },
-    { date: '2026-11-24', name: 'Diwali' },
-    { date: '2026-12-03', name: 'State Foundation Day' },
-    { date: '2026-12-12', name: 'Winter Solstice' },
+    { date: '2026-11-08', name: 'Diwali' },
     { date: '2026-12-25', name: 'Christmas Day' },
-    { date: '2026-12-31', name: "New Year's Eve" },
     { date: '2027-01-01', name: "New Year's Day" },
     { date: '2027-01-26', name: 'Republic Day' },
   ];
 
   const leaves: Leave[] = [
-    { id: 'leave-1', employeeId: 'emp-01', startDate: '2026-12-08', endDate: '2026-12-09', type: 'PLANNED', reason: 'Personal work' },
-    { id: 'leave-2', employeeId: 'emp-03', startDate: '2026-12-22', endDate: '2026-12-22', type: 'COMP_OFF', reason: 'Diwali coverage' },
-    { id: 'leave-3', employeeId: 'emp-11', startDate: '2026-12-15', endDate: '2026-12-17', type: 'PLANNED', reason: 'Family event' },
-    { id: 'leave-4', employeeId: 'emp-17', startDate: '2026-12-18', endDate: '2026-12-18', type: 'SICK', reason: 'Unwell' },
-    { id: 'leave-5', employeeId: 'emp-24', startDate: '2026-12-05', endDate: '2026-12-05', type: 'COMP_OFF', reason: 'Weekend coverage' },
-    { id: 'leave-6', employeeId: 'emp-28', startDate: '2026-12-27', endDate: '2026-12-28', type: 'PLANNED', reason: 'Travel' },
+    { id: 'leave-1', employeeId: 'emp-01', startDate: '2026-12-08', endDate: '2026-12-09', type: 'PLANNED', reason: 'Approved leave' },
+    { id: 'leave-2', employeeId: 'emp-03', startDate: '2026-12-22', endDate: '2026-12-22', type: 'COMP_OFF', reason: 'Comp-off swap' },
+    { id: 'leave-3', employeeId: 'emp-11', startDate: '2026-12-15', endDate: '2026-12-17', type: 'PLANNED', reason: 'Approved leave' },
+    { id: 'leave-4', employeeId: 'emp-17', startDate: '2026-12-18', endDate: '2026-12-18', type: 'PLANNED', reason: 'Approved leave' },
+    { id: 'leave-5', employeeId: 'emp-24', startDate: '2026-12-05', endDate: '2026-12-05', type: 'COMP_OFF', reason: 'Comp-off swap' },
+    { id: 'leave-6', employeeId: 'emp-28', startDate: '2026-12-27', endDate: '2026-12-28', type: 'PLANNED', reason: 'Approved leave' },
   ];
 
   const state: AppState = {

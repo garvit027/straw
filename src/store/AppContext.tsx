@@ -7,11 +7,13 @@ import type {
 import { createSeedState } from '../data/seed';
 import { generateRoster } from '../engine/scheduler';
 
-const STORAGE_KEY = 'smart-roster:state:v1';
+const STORAGE_KEY = 'smart-roster:state:v2';
+const LEGACY_STORAGE_KEY = 'smart-roster:state:v1';
 
 function loadState(): AppState {
   const seed = createSeedState();
   try {
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return seed;
     const parsed = JSON.parse(raw) as Partial<AppState>;

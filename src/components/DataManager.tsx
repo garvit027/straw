@@ -50,7 +50,7 @@ export default function DataManager() {
 
   const schemas: Record<Collection, { fields: FieldDef[]; columns: Array<{ key: string; label: string; render?: (row: never) => string }>; title: string; note: string }> = {
     employees: {
-      title: 'Employees', note: '30+ people across four pods. Edit assignments here; the roster regenerates automatically.',
+      title: 'Employees', note: '30 people across four pods. Edit assignments here; the roster regenerates automatically.',
       fields: [
         { key: 'name', label: 'Full name', type: 'text' },
         { key: 'email', label: 'Email', type: 'text' },
@@ -76,7 +76,7 @@ export default function DataManager() {
       columns: [{ key: 'code', label: 'Code' }, { key: 'name', label: 'Name' }, { key: 'category', label: 'Category' }],
     },
     processes: {
-      title: 'Processes', note: 'Customer Support, Abandoned Cart Conversion, Retention, NDR and Operations.',
+      title: 'Processes', note: 'Customer Support, Abandoned Cart Conversion, Retention and NDR.',
       fields: [
         { key: 'name', label: 'Process name', type: 'text' }, { key: 'code', label: 'Code', type: 'text' }, { key: 'color', label: 'Colour', type: 'color' },
       ],
@@ -250,7 +250,7 @@ export default function DataManager() {
         </Modal>
       )}
 
-      <div className="callout full"><Database size={16} /> State is persisted in your browser's localStorage. Use <strong>Reset</strong> to return to the original 32-employee sample dataset at any time.</div>
+      <div className="callout full"><Database size={16} /> State is persisted in your browser's localStorage. Use <strong>Reset</strong> to return to the original 30-employee sample dataset at any time.</div>
     </div>
   );
 }
