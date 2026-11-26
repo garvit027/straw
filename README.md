@@ -129,4 +129,13 @@ I would add a real optimisation solver with a weighted objective for fairness an
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds with `npm ci && npm run build` and publishes `dist/` with the official GitHub Pages actions. Enable Pages with **Source = GitHub Actions** in repository settings (or `gh api -X PUT repos/:owner/:repo/pages -f build_type=workflow`). The Vite `base` is `/straw/`; override it with `VITE_BASE_PATH` if the repo is renamed.
+The app is a static Vite build (`npm ci && npm run build` → `dist/`), so every major host can auto-deploy it from the GitHub repo.
+
+| Host | Auto-deploy setup | Config in this repo |
+|---|---|---|
+| **GitHub Pages** (current) | `.github/workflows/deploy.yml` runs on every push to `main`. Enable **Source = GitHub Actions** in repo settings. | Default `base` is `/straw/`. |
+| **Vercel** (recommended alternative) | Import `garvit027/straw` in Vercel; it detects Vite and deploys every push/PR. | `vercel.json` sets the build, output, SPA rewrite and `VITE_BASE_PATH=/`. |
+| **Netlify** | Import the repo; Netlify reads the config automatically. | `netlify.toml` sets the build, output, SPA redirect and `VITE_BASE_PATH=/`. |
+| **Cloudflare Pages** | Connect the repo; set build command `npm run build`, output `dist`, and env var `VITE_BASE_PATH=/` in the dashboard. | `public/_redirects` provides the SPA fallback. |
+
+On root-domain hosts, `VITE_BASE_PATH=/` is required; otherwise the built assets would still be requested from `/straw/assets/...` and 404. GitHub Pages keeps the default `/straw/`.
