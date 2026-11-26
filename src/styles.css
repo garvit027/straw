@@ -290,6 +290,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .backup-row .score { font-size: 11px; color: var(--muted); }
 .toast { display: flex; align-items: center; gap: 9px; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; border-radius: 9px; padding: 10px 14px; font-size: 13px; }
 .toast button { margin-left: auto; border: 0; background: none; color: inherit; font-size: 18px; }
+.toast-floating { position: fixed; top: 76px; right: 24px; z-index: 60; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16); }
 
 /* ---------- change simulator ---------- */
 .diff-list { display: flex; flex-direction: column; gap: 6px; }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   BarChart3, CalendarDays, AlertTriangle, SlidersHorizontal, Database, BookOpen,
-  Sparkles, RotateCcw, Download, Menu, X,
+  Sparkles, RotateCcw, Download, Menu, X, CheckCircle2,
 } from 'lucide-react';
 import { useApp } from './store/AppContext';
 import { monthOptions, monthLabel } from './utils/date';
@@ -28,11 +28,24 @@ export default function App() {
   const { state, generate, reset } = useApp();
   const [page, setPage] = useState<Page>('overview');
   const [navOpen, setNavOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!state.roster) generate(state.rosterMonth);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!message) return;
+    const timer = window.setTimeout(() => setMessage(''), 3500);
+    return () => window.clearTimeout(timer);
+  }, [message]);
+
+  const generateWithFeedback = (month?: string) => {
+    const target = month ?? state.rosterMonth;
+    generate(target);
+    setMessage(`Roster generated for ${monthLabel(target)}`);
+  };
 
   const mandatory = state.roster?.conflicts.filter((c) => c.mandatory).length ?? 0;
 
@@ -84,22 +97,33 @@ export default function App() {
           <button className="icon-btn mobile-only" onClick={() => setNavOpen(true)} aria-label="Open menu"><Menu size={20} /></button>
           <div className="topbar-title">
             <h1>{NAV.find((n) => n.id === page)?.label}</h1>
-            <span>Monthly operations planning workspace</span>
+            <span>
+              {state.roster
+                ? `Last generated ${new Date(state.roster.generatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                : 'Monthly operations planning workspace'}
+            </span>
           </div>
           <div className="topbar-actions">
             <select
               className="month-select"
               value={state.rosterMonth}
-              onChange={(e) => generate(e.target.value)}
+              onChange={(e) => generateWithFeedback(e.target.value)}
               title="Select planning month"
             >
               {monthOptions(state.rosterMonth).map((m) => <option key={m} value={m}>{monthLabel(m)}</option>)}
             </select>
             <button className="btn btn-ghost" onClick={reset} title="Restore the original sample dataset"><RotateCcw size={15} /> Reset</button>
             <button className="btn btn-ghost" onClick={exportCSV} disabled={!state.roster} title="Download roster as CSV"><Download size={15} /> CSV</button>
-            <button className="btn btn-primary" onClick={() => generate()}><Sparkles size={15} /> Generate roster</button>
+            <button className="btn btn-primary" onClick={() => generateWithFeedback()}><Sparkles size={15} /> Generate roster</button>
           </div>
         </header>
+
+        {message && (
+          <div className="toast toast-floating" role="status" aria-live="polite">
+            <CheckCircle2 size={16} /> {message}
+            <button onClick={() => setMessage('')} aria-label="Dismiss notification">×</button>
+          </div>
+        )}
 
         <div className="content">
           {page === 'overview' && <Overview onNavigate={setPage} />}
