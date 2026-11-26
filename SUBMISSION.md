@@ -1,6 +1,6 @@
 # Submission pack
 
-- **Application URL:** https://garvit027.github.io/straw/
+- **Application URL:** https://straw-kappa.vercel.app/
 - **GitHub repository:** https://github.com/garvit027/straw
 - **LinkedIn:** https://www.linkedin.com/in/garvit027/
 - **Email:** final draft in [`EMAIL.md`](EMAIL.md)
@@ -13,7 +13,7 @@ Before recording, clear browser storage so the app starts from the exact seed da
 Record at 1280×720 or higher. Use the default December 2026 month. Move the cursor slowly and narrate the *reasoning*, not just the clicks.
 
 ### 0:00–0:30 — Setup and problem framing
-- Open https://garvit027.github.io/straw/. On **Overview**, point out 30 employees, 20 brands, 54 allocations and four pods.
+- Open https://straw-kappa.vercel.app/. On **Overview**, point out 30 employees, 20 brands, 54 allocations and four pods.
 - Say: *"80% of brands here are single-resource; the rest have two or three people, some sharing a process. Each brand-process pair carries its own operating calendar."*
 - Show the **Operating calendar mix** card — 365-day, daily-minus-holidays, Mon–Sat and Mon–Fri rules all coexisting.
 

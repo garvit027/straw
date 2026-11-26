@@ -10,7 +10,7 @@ Hi Ozair and Aryan,
 
 Please find my Smart Roster Management System assignment submission below.
 
-1. **Application URL:** https://garvit027.github.io/straw/
+1. **Application URL:** https://straw-kappa.vercel.app/
 2. **GitHub repository:** https://github.com/garvit027/straw
 3. **LinkedIn profile:** https://www.linkedin.com/in/garvit027/
 

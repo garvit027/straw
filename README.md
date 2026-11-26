@@ -2,7 +2,7 @@
 
 A browser-based roster planning tool built for the Datastraw AI + Tech Internship assessment. It plans monthly rosters across multiple brands, processes and operational pods, and — more importantly — tells an operations manager exactly **why** a plan is or is not publishable.
 
-**Live demo:** https://garvit027.github.io/straw/
+**Live demo:** https://straw-kappa.vercel.app/
 **Repository:** https://github.com/garvit027/straw
 
 ---
